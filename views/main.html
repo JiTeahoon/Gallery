@@ -3,16 +3,20 @@
 
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <title>게시판</title>
 </head>
 
 <body>
-    <p style="text-align: left;"><button>로그인</button>&nbsp;</p>
+    <p style="text-align: left;">
+        <button type = "submit" onclick = "OnShowLoginDialog()">로그인</button>&nbsp;</p>
     <hr />
     <table style="height: 52px; width: 942px;" border="1">
         <tbody>
             <tr>
-                <th>아이디</th>
+                <th>번호</th>
                 <th>제목</th>
                 <th>글쓴이</th>
                 <th>작성일</th>
@@ -22,24 +26,31 @@
             <% prodList.forEach(function(item, index){ %>
             <tr>
                 <th style="width: 76px;"><%= item.postIdx %></th>
-                <th style="width: 542px;"><a href = ""><%= item.post %></a></th>
+                <th style="width: 542px;"><a href="/view/?page=<%= item.postIdx %>", onclick="OnShowView"><%= item.post %></a></th>
                 <th style="width: 130px;"><%= item.id %></th>
                 <th style="width: 166px;"><%= item.created_at %></th>
             </tr>
             <% }); %>
         </tbody>
     </table>
+    <div id="loginDialog" title="" style='display:none'>
+        아이디
+        <br>
+        <input type="text" id="id" placeholder="id">
+        <br>
+        비밀번호를 입력하시오.
+        <input type="text" id="password" placeholder="password">
+    </div>
     <p style="text-align: left;"><button>글쓰기</button></p>
     <table style="width: 942px;">
         <tbody>
             <tr>
-                <td style="width: 942px; text-align: center;">1</td>
+                <!-- var idx = 1; -->
+                <td style="width: 942px; text-align: center;"><a href="/board/page=1">1</a></td>
             </tr>
         </tbody>
     </table>
-    <!-- <tbody>
-            <script src="/sequelize.js"></script>
-        </tbody> -->
+    <script src="/frontpage.js"></script>
 </body>
 
 </html>
