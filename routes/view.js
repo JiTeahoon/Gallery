@@ -13,18 +13,55 @@ router.get('/', function (req, res, next) {
     });
 
     var query = `select * from postdb where postIdx = ${req.query.page}`;
-    console.log(query);
 
-    fs.readFile('views/view.html', 'utf8', function (error, data) {
-        mySqlClient.query(query, function (error, viewresult) {
-            if (error) {
+    var viewpage;
+    fs.readFile('views/view.html', 'utf8', function(error, result){
+        if (error) {
+            console.log('error : ', error.message);
+            next(error);
+        }
+        else{
+            viewpage = result;
+        }
+    });
+    var commentpage;
+    fs.readFile('views/comment.html', 'utf8', function(error, result){
+        if (error) {
+            console.log('error : ', error.message);
+            next(error);
+        } else {
+            commentpage = result;
+        }
+    });
+
+    mySqlClient.query(query, function (error, viewresult) {
+        if (error) {
+            console.log('error : ', error.message);
+            next(error);
+        } else {
+            if (viewresult[0] !== undefined) {
+                query = `select * from commentdb where postIndex = ${req.query.page} ORDER BY created_at DESC`;
+                mySqlClient.query(query, function (error, commentresults) {
+                    if (error) {
+                        console.log('error : ', error.message);
+                        next(error);
+                    } else {
+                        console.log(commentresults[0].created_at.toISOString());
+                        var boardpage = ejs.render(viewpage, {
+                            title: viewresult[0].title,
+                            post: viewresult[0].post,
+                            comment: ejs.render(commentpage, {
+                                commentList: commentresults})
+                        });
+
+                        res.send(boardpage);
+                    }
+                });       
+            } else {
                 console.log('error : ', error.message);
                 next(error);
-            } else {
-                console.log(viewresult);
-                res.status(201).json(viewresult);
             }
-        });
+        }
     });
 });
 
@@ -36,6 +73,9 @@ router.get('/comment', function (req, res, next) {
             next(error);
         } else {
             console.log(commentresults);
+            ejs.render(data, {
+                commentList: commentresults});
+
             res.send(ejs.render(data, {
                 commentList: commentresults
             }));
