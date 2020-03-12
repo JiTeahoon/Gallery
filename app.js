@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session = require('express-session');
 
 var boardRouter = require('./routes/board');
 var indexRouter = require('./routes/index');
@@ -16,13 +17,24 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+//key 세션의 키값, secret 세션의 비밀키, resave: 세션을 항상 저장할 지 여부(false 권장), 
+//saveUninitialized 세션이 저장되기전에 uninitalize상태로 저장
+app.use(session({
+  key: 'sid',
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge:24000 * 60 * 60 //쿠키 유효기간 24시간
+  }
+}));
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//location.replace('/board');
 app.use('/', indexRouter);
 app.use('/board', boardRouter);
 app.use('/login', loginRouter);
