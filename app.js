@@ -20,7 +20,7 @@ app.set('view engine', 'ejs');
 //key 세션의 키값, secret 세션의 비밀키, resave: 세션을 항상 저장할 지 여부(false 권장), 
 //saveUninitialized 세션이 저장되기전에 uninitalize상태로 저장
 app.use(session({
-  key: 'sid',
+  key: 'sessionkey',
   secret: 'secret',
   resave: false,
   saveUninitialized: true,
