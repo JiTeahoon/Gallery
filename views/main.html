@@ -25,7 +25,7 @@
             <tr>
                 <th style="width: 76px;"><%= item.postIdx %></th>
                 <th style="width: 542px;"><a href="/view/?page=<%= item.postIdx %>" ,
-                        onclick="OnShowView(<%= item.postIdx %>)"><%= item.post %></a></th>
+                        onclick=`OnShowView(<%= item.postIdx %>)`><%= item.post %></a></th>
                 <th style="width: 130px;"><%= item.id %></th>
                 <th style="width: 166px;"><%= item.created_at.toISOString().replace(/T/, ' ').replace(/\..+/, '') %>
                 </th>
