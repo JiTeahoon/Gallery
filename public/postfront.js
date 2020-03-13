@@ -11,7 +11,7 @@ function OnShowView(idx) {
             console.error(xhr.responseText);
         }
     }
-    
+     
     xhr.open('GET', '/view');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify({}));
