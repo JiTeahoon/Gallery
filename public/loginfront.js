@@ -1,26 +1,23 @@
 //로그인 버튼
-document.getElementById('login').addEventListener('submit', function(e) {
+document.getElementById('loginbutton').addEventListener('click', function(e) {
     console.log('login front scrit In');
 
-    //e.defaultPrevented();
-
-    var id = e.target.id.value;
-    var password = e.target.password.value;
+    var id = document.getElementById('id').value;
+    var password = document.getElementById('password').value;
     if(id === ''){
         return alert('아이디를 입력하세요.');
-        e.target.id.value = '';
-        e.target.password.value= '';
+        document.getElementById('id').value = '';
+        document.getElementById('password').value = '';
     }
 
     if(password === ''){
         return alert('비밀번호를 입력하세요.');
-        e.target.id.value = '';
-        e.target.password.value = '';
+        document.getElementById('id').value = '';
+        document.getElementById('password').value = '';
     }
 
     var xhr = new XMLHttpRequest();
     xhr.onload = function () {
-        console.log('퍽셩 완성');
         if (xhr.status == 201) {
             console.log(xhr.responseText);
             location.replace('/board');
@@ -37,6 +34,6 @@ document.getElementById('login').addEventListener('submit', function(e) {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify({id : id, password : password}));
 
-    e.target.id.value = '';
-    e.target.password.value= '';
+    document.getElementById('id').value = '';
+    document.getElementById('password').value = '';
 });

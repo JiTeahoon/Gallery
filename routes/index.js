@@ -6,11 +6,9 @@ var ejs = require('ejs');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  // var mySqlClient = mysql.createConnection({
-  //   user: 'root',
-  //   password: 'eocla880714',
-  //   database: 'gallerydb'
-  // });
+  if (req.session.authId !== undefined) {
+    return res.redirect('http://localhost:3000/board');
+  }
 
   fs.readFile('views/login.html', 'utf8', function (error, data) {
     if (error) {

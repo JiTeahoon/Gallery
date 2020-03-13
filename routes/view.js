@@ -51,7 +51,6 @@ router.get('/', function (req, res, next) {
                         console.log('error : ', error.message);
                         next(error);
                     } else {
-                        console.log(commentresults[0].created_at.toISOString());
                         var boardpage = ejs.render(viewpage, {
                             title: viewresult[0].title,
                             post: viewresult[0].post,
@@ -90,7 +89,7 @@ router.get('/comment', function (req, res, next) {
     })
 });
 
-router.post('/', function (req, res, next) {
-});
+// router.comment('/', function (req, res, next) {
+// });
 
 module.exports = router;
