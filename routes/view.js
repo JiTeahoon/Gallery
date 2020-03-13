@@ -6,6 +6,11 @@ var ejs = require('ejs');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+    if (req.session.authId === undefined) {
+        console.log('is not login!');
+        return res.redirect('http://localhost:3000');
+    }
+
     var mySqlClient = mysql.createConnection({
         user: 'root',
         password: 'eocla880714',
@@ -15,17 +20,17 @@ router.get('/', function (req, res, next) {
     var query = `select * from postdb where postIdx = ${req.query.page}`;
 
     var viewpage;
-    fs.readFile('views/view.html', 'utf8', function(error, result){
+    fs.readFile('views/view.html', 'utf8', function (error, result) {
         if (error) {
             console.log('error : ', error.message);
             next(error);
         }
-        else{
+        else {
             viewpage = result;
         }
     });
     var commentpage;
-    fs.readFile('views/comment.html', 'utf8', function(error, result){
+    fs.readFile('views/comment.html', 'utf8', function (error, result) {
         if (error) {
             console.log('error : ', error.message);
             next(error);
@@ -51,12 +56,13 @@ router.get('/', function (req, res, next) {
                             title: viewresult[0].title,
                             post: viewresult[0].post,
                             comment: ejs.render(commentpage, {
-                                commentList: commentresults})
+                                commentList: commentresults
+                            })
                         });
 
                         res.send(boardpage);
                     }
-                });       
+                });
             } else {
                 console.log('error : ', error.message);
                 next(error);
@@ -74,7 +80,8 @@ router.get('/comment', function (req, res, next) {
         } else {
             console.log(commentresults);
             ejs.render(data, {
-                commentList: commentresults});
+                commentList: commentresults
+            });
 
             res.send(ejs.render(data, {
                 commentList: commentresults

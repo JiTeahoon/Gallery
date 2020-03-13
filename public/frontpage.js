@@ -1,32 +1,30 @@
-// function OnShowLoginDialog() {
-//     $(`#${"loginDialog"}`).dialog({
-//         modal: true,
-//         buttons: {
-//             "수정": function () {
-//                 $(this).dialog('close');
+document.getElementById('searchbtn').addEventListener('click', function(e) {
+    var o = document.getElementById('searchoption');
+    var option = o.options[o.selectedIndex].value;
 
-//                 var xhr = new XMLHttpRequest();
-//                 xhr.onload = function () {
-//                     console.log('DONE: ', xhr.status);
+    var searchText = document.getElementById('searchtext').value;
+    
+    if(searchText.length < 2)
+    {
+        return alert("검색 단어는 2글자 이상이어야 됩니다.")
+    }
 
-//                     if (xhr.status == 200) {
-//                         console.log(xhr.responseText);
-//                         location.replace('/');
-//                     } else {
-//                         console.error(xhr.responseText);
-//                     }
-//                 }
+    var text = encodeURIComponent(searchText);
+    var urlquery = `http://localhost:3000/board/?s_type=${option}&s_keyword=${text}`;
 
-//                 var inputid = 'id';
-//                 var id = document.getElementById(inputid).value;
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log(xhr.responseText);
+            location.replace(urlquery);
+        } else {
+            console.error(xhr.responseText);
+        }
+    }
+    
+    xhr.open('GET', urlquery, true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send({'s_keyword=' : encodeURIComponent(searchText), 's_type=' : option});
 
-//                 inputid = `password`;
-//                 var password = document.getElementById(inputid).value;
-
-//                 xhr.open('POST', '/login');
-//                 xhr.setRequestHeader('Content-Type', 'application/json');
-//                 xhr.send(JSON.stringify({ id: id, password: password }));
-//             },
-//         }
-//     });
-// }
+    document.getElementById('searchtext').value = '';
+});

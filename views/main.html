@@ -7,6 +7,7 @@
     <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <title>게시판</title>
+    <h1>안녕하세요 <%= name %>님</h1>
 </head>
 
 <body>
@@ -23,9 +24,11 @@
             <% prodList.forEach(function(item, index){ %>
             <tr>
                 <th style="width: 76px;"><%= item.postIdx %></th>
-                <th style="width: 542px;"><a href="/view/?page=<%= item.postIdx %>", onclick="OnShowView(<%= item.postIdx %>)"><%= item.post %></a></th>
+                <th style="width: 542px;"><a href="/view/?page=<%= item.postIdx %>" ,
+                        onclick="OnShowView(<%= item.postIdx %>)"><%= item.post %></a></th>
                 <th style="width: 130px;"><%= item.id %></th>
-                <th style="width: 166px;"><%= item.created_at.toISOString().replace(/T/, ' ').replace(/\..+/, '') %></th>
+                <th style="width: 166px;"><%= item.created_at.toISOString().replace(/T/, ' ').replace(/\..+/, '') %>
+                </th>
             </tr>
             <% }); %>
         </tbody>
@@ -47,6 +50,24 @@
             </tr>
         </tbody>
     </table>
+    <br>
+    <table style="width: 942px;">
+        <tbody>
+            <tr>
+                <!-- var idx = 1; -->
+                <td style="width: 942px; text-align: center;">
+                    <select id = "searchoption">
+                        <option value="0" >제목</option>
+                        <option value="1" >글쓴이</option>
+                        <option value="2" >이름</option>
+                    </select>
+                    <input type="text" id="searchtext" autocomplete="on">
+                    <button type="button" id = "searchbtn" style="text-align: center;">검색</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
     <script src="/frontpage.js"></script>
 </body>
 
