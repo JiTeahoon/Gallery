@@ -4,21 +4,22 @@ document.getElementById('loginbutton').addEventListener('click', function(e) {
 
     var id = document.getElementById('id').value;
     var password = document.getElementById('password').value;
+
     if(id === ''){
-        return alert('아이디를 입력하세요.');
         document.getElementById('id').value = '';
         document.getElementById('password').value = '';
+        return alert('아이디를 입력하세요.');
     }
 
     if(password === ''){
-        return alert('비밀번호를 입력하세요.');
         document.getElementById('id').value = '';
         document.getElementById('password').value = '';
+        return alert('비밀번호를 입력하세요.');
     }
 
     var xhr = new XMLHttpRequest();
     xhr.onload = function () {
-        if (xhr.status == 201) {
+        if (xhr.status == 200) {
             console.log(xhr.responseText);
             location.replace('/board');
         } else if(xhr.status == 500){
@@ -36,4 +37,8 @@ document.getElementById('loginbutton').addEventListener('click', function(e) {
 
     document.getElementById('id').value = '';
     document.getElementById('password').value = '';
+});
+
+document.getElementById('registerbutton').addEventListener('click', function(e) {
+    location.replace('http://localhost:3000/register');
 });

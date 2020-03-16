@@ -7,7 +7,7 @@ var session = require('express-session');
 
 var boardRouter = require('./routes/board');
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var userRegisterRouter = require('./routes/user-register');
 var loginRouter = require('./routes/login');
 var viewRouter = require('./routes/view');
 var writeRouter = require('./routes/write');
@@ -41,7 +41,7 @@ app.use('/board', boardRouter);
 app.use('/login', loginRouter);
 app.use('/view', viewRouter);
 app.use('/write', writeRouter);
-
+app.use('/register', userRegisterRouter);
 //app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
