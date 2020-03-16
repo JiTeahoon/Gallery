@@ -28,3 +28,20 @@ document.getElementById('searchbtn').addEventListener('click', function(e) {
 
     document.getElementById('searchtext').value = '';
 });
+
+document.getElementById('writebtn').addEventListener('click', function(e) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log(xhr.responseText);
+            location.replace('http://localhost:3000/write');
+            //location.replace(urlquery);
+        } else {
+            console.error(xhr.responseText);
+        }
+    }
+
+    xhr.open('GET', '/board/write');
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send({});
+})
