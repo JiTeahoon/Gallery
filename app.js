@@ -10,6 +10,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var viewRouter = require('./routes/view');
+var writeRouter = require('./routes/write');
 
 var app = express();
 
@@ -39,6 +40,7 @@ app.use('/', indexRouter);
 app.use('/board', boardRouter);
 app.use('/login', loginRouter);
 app.use('/view', viewRouter);
+app.use('/write', writeRouter);
 
 //app.use('/users', usersRouter);
 

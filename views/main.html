@@ -25,7 +25,7 @@
             <tr>
                 <th style="width: 76px;"><%= item.postIdx %></th>
                 <th style="width: 542px;"><a href="/view/?page=<%= item.postIdx %>" ,
-                        onclick=`OnShowView(<%= item.postIdx %>)`><%= item.post %></a></th>
+                        onclick=`OnShowView(<%= item.postIdx %>)`><%= item.title %></a></th>
                 <th style="width: 130px;"><%= item.id %></th>
                 <th style="width: 166px;"><%= item.created_at.toISOString().replace(/T/, ' ').replace(/\..+/, '') %>
                 </th>
@@ -41,7 +41,7 @@
         비밀번호를 입력하시오.
         <input type="text" id="password" placeholder="password">
     </div>
-    <p style="text-align: left;"><button>글쓰기</button></p>
+    <p style="text-align: left;"><button type="button" id = "writebtn">글쓰기</button></p>
     <table style="width: 942px;">
         <tbody>
             <tr>
@@ -68,7 +68,7 @@
         </tbody>
     </table>
 
-    <script src="/frontpage.js"></script>
+    <script src="/boardfront.js"></script>
 </body>
 
 </html>

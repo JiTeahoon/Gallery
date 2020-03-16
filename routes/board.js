@@ -28,13 +28,14 @@ router.get('/', function (req, res, next) {
     } else if (req.query.s_type === "1") {
       query = `select * from postdb where postdb.id LIKE '%${req.query.s_keyword}%' ORDER BY postdb.created_at`;
     } else {
-      query = `select postdb.postIdx, postdb.id, postdb.title , postdb.created_at from postdb LEFT join userdb on userdb.id = postdb.id WHERE userdb.name = ${req.query.s_keyword} ORDER BY postdb.created_at`;;
+      query = `select postdb.postIdx, postdb.id, postdb.title , postdb.created_at from postdb LEFT join userdb on userdb.id = postdb.id WHERE userdb.name = '${req.query.s_keyword}' ORDER BY postdb.created_at`;
     }
   }
 
   fs.readFile('views/main.html', 'utf8', function (error, data) {
     mySqlClient.query(query, function (error, results) {
       if (error) {
+        console.log(`it fail parse ${query}`);
         console.log('error : ', error.message);
         next(error);
       } else {
@@ -48,4 +49,13 @@ router.get('/', function (req, res, next) {
     });
   });
 });
+
+router.get('/write', function (req, res, next) {
+  try{
+    res.redirect('http://localhost:3000/write');
+  }catch(error){
+    console.log(error);
+  }
+});
+
 module.exports = router;
