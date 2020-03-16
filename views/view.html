@@ -18,11 +18,12 @@
             <tr style="height: 305px;">
                 <!-- 게시물 -->
                 <td style="width: 582px; height: 305px;"><span id="board"><%=post %></span></td>
+                <input type = 'hidden' id = 'postidx' value = <%=postIdx %>>
             </tr>
             <tr style="height: 57px;">
                 <td style="width: 582px; height: 57px;">
                     <!-- 댓글 테이블 -->
-                    <table style="height: 28px; width: 581px;" border="1">
+                    <table style="height: 28px; width: 581px;" border="1" id = "comment-list">
                         <tbody>
                             <%-comment %>
                         </tbody>
@@ -34,8 +35,8 @@
     <input type = "hidden" id = "postidx" />
     <p><input style="height: 57px;" id = "commentinput" size="90" type="text" />
         <button type = "button" id = "commentregister">등록</button></p>
-    <script src="/postfront.js"></script>
-
 </body>
+<script src="/postfront.js">	</script>
+
 
 </html>

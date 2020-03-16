@@ -54,6 +54,7 @@ router.get('/', function (req, res, next) {
                         var boardpage = ejs.render(viewpage, {
                             title: viewresult[0].title,
                             post: viewresult[0].post,
+                            postIdx: viewresult[0].postIdx,
                             comment: ejs.render(commentpage, {
                                 commentList: commentresults
                             })
@@ -89,6 +90,55 @@ router.get('/comment', function (req, res, next) {
     })
 });
 
+router.post('/commentregister', function (req, res, next) {
+    var idx = parseInt(`${req.body.idx}`);
+    var comment = req.body.comment;
+    var id = req.session.authId;
+
+    var query = `INSERT INTO commentdb (postIndex, comment, created_at, id) VALUES (${idx}, '${comment}', CURRENT_TIMESTAMP, '${id}')`;
+
+    var mySqlClient = mysql.createConnection({
+        user: 'root',
+        password: 'eocla880714',
+        database: 'gallerydb'
+    });
+
+    mySqlClient.query(query, function (error, result) {
+        if (error) {
+            console.log('error : ', error.message);
+            next(error);
+        } else {
+            res.send(result);           
+        }
+    });
+});
+
+router.delete('/delete', function(req, res, next){
+    var idx = parseInt(`${req.body.idx}`);
+    var query = `SELECT * FROM commentdb WHERE postIndex = ${req.body.postIndex}`;
+
+    mySqlClient.query(query, function (error, result) {
+        if (error) {
+            console.log('error : ', error.message);
+            next(error);
+        } else {
+            if(result[idx] === undefined || result[idx].id !== req.session.authId){
+                res.status(500).send("is not match id");
+                return;
+            }
+
+            var query = `DELETE * FROM commentdb WHERE postIndex = '${result[idx].postIndex}' AND id = '${result[idx].postIndex}' AND created_at = '${result[idx].created_at}'`;
+            mySqlClient.query(query, function (error, result) {
+                if (error) {
+                    console.log('error : ', error.message);
+                    next(error);
+                } else {
+                    res.send(result);           
+                }
+            });
+        }
+    });
+});
 // router.comment('/', function (req, res, next) {
 // });
 

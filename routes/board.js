@@ -40,7 +40,8 @@ router.get('/', function (req, res, next) {
         next(error);
       } else {
         console.log(`it connect search in parse ${query}`);
-
+        console.log(data);
+        
         res.send(ejs.render(data, {
           prodList: results,
           name: req.session.authId
@@ -51,11 +52,42 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/write', function (req, res, next) {
-  try{
+  try {
     res.redirect('http://localhost:3000/write');
-  }catch(error){
+  } catch (error) {
     console.log(error);
+    next(error);
   }
 });
 
+router.delete('/delete', function (req, res, next) {
+  var mySqlClient = mysql.createConnection({
+    user: 'root',
+    password: 'eocla880714',
+    database: 'gallerydb'
+  });
+
+  var query = `SELECT * FROM postdb WHERE postIdx = ${req.body.postIdx}`;
+
+  mySqlClient.query(query, function (error, results) {
+    if (error) {
+      console.log(error);
+      next(error);
+    } else {
+      if (results[0] !== undefined) {
+        query = `DELETE FROM postdb WHERE postIdx = ${req.body.postIdx}`;
+        mySqlClient.query(query, function (error, results) {
+          if (error) {
+            console.log(error);
+            next(error);
+          } else {
+            res.redirect('http://localhost:3000/board').send(results);
+          }
+        });
+      } else {
+        res.status(500).send(results);
+      }
+    }
+  });
+});
 module.exports = router;

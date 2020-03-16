@@ -45,3 +45,21 @@ document.getElementById('writebtn').addEventListener('click', function(e) {
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.send({});
 })
+
+function deletePost(postIdx){
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log(xhr.responseText);
+            //location.replace(urlquery);
+        } else if(xhr.status === 500){
+            return alert("글을 삭제할 수 없습니다.");
+        } else {
+            console.error(xhr.responseText);
+        }
+    }
+
+    xhr.open('DELETE', '/board/delete');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({postIdx : postIdx}));
+}
