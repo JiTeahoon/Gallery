@@ -6,7 +6,7 @@ var ejs = require('ejs');
 
 router.post('/', function (req, res, next) {
   if (req.session.authId !== undefined) {
-    return res.status(201).send();
+    return res.send();
   }
 
   var mySqlClient = mysql.createConnection({
