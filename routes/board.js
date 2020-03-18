@@ -8,9 +8,8 @@ var url = require('url');
 
 router.get('/', function (req, res, next) {
   if (req.session.authId === undefined) {
-    console.log('is not login!');
     return res.redirect('http://localhost:3000');
-}
+  }
 
   var mySqlClient = mysql.createConnection({
     user: 'root',
@@ -35,12 +34,9 @@ router.get('/', function (req, res, next) {
   fs.readFile('views/main.html', 'utf8', function (error, data) {
     mySqlClient.query(query, function (error, results) {
       if (error) {
-        console.log(`it fail parse ${query}`);
         console.log('error : ', error.message);
         next(error);
       } else {
-        console.log(`it connect search in parse ${query}`);
-
         res.send(ejs.render(data, {
           prodList: results,
           name: req.session.authId
