@@ -1,22 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var mysql = require('mysql');
 var fs = require('fs');
 var ejs = require('ejs');
-var urlencode = require('urlencode');
-var url = require('url');
 
 router.get('/', function (req, res, next) {
   if (req.session.authId === undefined) {
     return res.redirect('http://localhost:3000');
   }
-
-  var mySqlClient = mysql.createConnection({
-    user: 'root',
-    password: 'eocla880714',
-    database: 'gallerydb'
-  });
-
   var query;
   //0 제목 1 아이디 2 유저이름
   if (req.query.s_type === undefined) {
@@ -32,7 +22,7 @@ router.get('/', function (req, res, next) {
   }
 
   fs.readFile('views/main.html', 'utf8', function (error, data) {
-    mySqlClient.query(query, function (error, results) {
+    req.app.get('mysql').query(query, function (error, results) {
       if (error) {
         console.log('error : ', error.message);
         next(error);

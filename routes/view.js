@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var mysql = require('mysql');
 var fs = require('fs');
 var ejs = require('ejs');
 
@@ -10,12 +9,6 @@ router.get('/', function (req, res, next) {
         console.log('is not login!');
         return res.redirect('http://localhost:3000');
     }
-
-    var mySqlClient = mysql.createConnection({
-        user: 'root',
-        password: 'eocla880714',
-        database: 'gallerydb'
-    });
 
     var query = `select * from postdb where postIdx = ${req.query.page}`;
 
@@ -39,14 +32,14 @@ router.get('/', function (req, res, next) {
         }
     });
 
-    mySqlClient.query(query, function (error, viewresult) {
+    req.app.get('mysql').query(query, function (error, viewresult) {
         if (error) {
             console.log('error : ', error.message);
             next(error);
         } else {
             if (viewresult[0] !== undefined) {
                 query = `select * from commentdb where postIndex = ${req.query.page} ORDER BY created_at DESC`;
-                mySqlClient.query(query, function (error, commentresults) {
+                req.app.get('mysql').query(query, function (error, commentresults) {
                     if (error) {
                         console.log('error : ', error.message);
                         next(error);
@@ -72,7 +65,7 @@ router.get('/', function (req, res, next) {
 
 router.get('/comment', function (req, res, next) {
     query = `select * from commentdb where postIndex = ${req.query.page} ORDER BY created_at DESC`;
-    mySqlClient.query(query, function (error, commentresults) {
+    req.app.get('mysql').query(query, function (error, commentresults) {
         if (error) {
             console.log('error : ', error.message);
             next(error);

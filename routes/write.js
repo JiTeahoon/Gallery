@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var mysql = require('mysql');
 var fs = require('fs');
-var ejs = require('ejs');
 
 router.get('/', function (req, res, next) {
     // if (req.session.authId === undefined) {
@@ -23,13 +21,7 @@ router.get('/', function (req, res, next) {
 router.post('/register', function (req, res, next) {
     var query = `INSERT INTO postdb (postIdx, id, title, post, created_at) VALUES (NULL, '${req.session.authId}', '${req.body.title}', '${req.body.post}', CURRENT_TIMESTAMP)`
 
-    var mySqlClient = mysql.createConnection({
-        user: 'root',
-        password: 'eocla880714',
-        database: 'gallerydb'
-    });
-
-    mySqlClient.query(query, function (error, results) {
+    req.app.get('mysql').query(query, function (error, results) {
         if (error) {
             console.log(`it fail parse ${query}`);
             console.log('error : ', error.message);

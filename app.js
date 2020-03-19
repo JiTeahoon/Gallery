@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
+var mysql = require('mysql');
 
 var boardRouter = require('./routes/board');
 var indexRouter = require('./routes/index');
@@ -17,10 +18,17 @@ var http = require('http');
 var server = http.createServer(app);
 
 var webSocket = require('./socket');
+
+var mySqlClient = mysql.createConnection({
+  user: 'root',
+  password: 'eocla880714',
+  database: 'gallerydb'
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
+app.set('mysql', mySqlClient);
 //key 세션의 키값, secret 세션의 비밀키, resave: 세션을 항상 저장할 지 여부(false 권장), 
 //saveUninitialized 세션이 저장되기전에 uninitalize상태로 저장
 var sessionMiddleware = session({
@@ -29,7 +37,7 @@ var sessionMiddleware = session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-    maxAge:24000 * 60 * 60 //쿠키 유효기간 24시간
+    maxAge: 24000 * 60 * 60 //쿠키 유효기간 24시간
   }
 });
 
