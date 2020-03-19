@@ -9,6 +9,11 @@ module.exports = (server, app, sessionMiddleware) => {
     });
 
     io.on('connection', function (socket) {
+        if(socketList.find(element => element.request.session.authId === socket.request.session.authId)){
+            console.log('same ip');
+            return;
+        };
+        
         socketList.push(socket);
         console.log(`유저 숫자 : ${socketList.length}`);
 
