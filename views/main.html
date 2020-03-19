@@ -23,8 +23,16 @@
             padding: 10px;
         }
 
+        #container-table {
+            content: "";
+            width: 50%;
+            clear: both;
+            display: table;
+        }
+
         #container {
-            width: 400px;
+            float: left;
+            width: 350px;
             height: 400px;
             border: 1px solid black;
             background: ivory;
@@ -32,11 +40,26 @@
 
         #chatView {
             height: 90%;
+            width: 350px;
             overflow-y: scroll;
+        }
+
+        #userView {
+            height: 100%;
+            width: 350px;
+            overflow-y: scroll;
+        }
+
+        #userForm {
+            height: 10%;
+            width: 350px;
+            border-top: 1px solid black;
+            text-align: center;
         }
 
         #chatForm {
             height: 10%;
+            width: 350px;
             border-top: 1px solid black;
             text-align: center;
         }
@@ -53,6 +76,17 @@
             border-radius: 50px;
             background: black;
             color: white;
+        }
+
+        .msgLine {
+            margin: 15px;
+        }
+
+        .msgBox {
+            border: 1px solid black;
+            background: skyblue;
+            padding: 2px 5px;
+            border-radius: 10px;
         }
 
         nav,
@@ -138,21 +172,30 @@
         </table>
     </nav>
     <section>
-        <div id="container">
-            <div id="chatView">
+        <div id="container-table">
+            <div id="container">
+                <div id="chatView">
+                </div>
+                <form id="chatForm" onsubmit="return false">
+                    <input type="text" id="msg">
+                    <input type="submit" id="send" value="전송">
+                </form>
             </div>
-            <form id="chatForm" onsubmit="return false">
-                <input type="text" id="msg">
-                <input type="submit" id="send" value="전송">
-            </form>
+            <div id="container">
+                <div id="userView">
+                </div>
+            </div>
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src='/socket.io/socket.io.js'></script>
         <script>
             var socket = io();
 
+            var id;
+
             var chatView = document.getElementById('chatView');
             var chatForm = document.getElementById('chatForm');
+            var userView = document.getElementById('userView');
 
             chatForm.addEventListener('submit', function () {
                 var msg = $('#msg');
@@ -184,12 +227,50 @@
 
                 msgBox.append(msg);
                 msgBox.css('display', 'inline-block');
+                msgLine.css('text-align', 'left');
 
                 msgLine.append(msgBox);
                 $('#chatView').append(msgLine);
 
                 chatView.scrollTop = chatView.scrollHeight;
             });
+
+            // socket.on('ENTER', function (msg) {
+            //     var userLine = $('<div class="msgLine">');
+            //     var userBox = $('<div class="msgBox">');
+
+            //     userLine.append(`${msg}`);
+            //     userLine.css('display', 'inline-block');
+            //     userLine.css('text-align', 'left');
+
+            //     userLine.append(userBox);
+            //     $('#userView').append(userLine);
+
+            //     //socket.emit('SEND', msg.val());
+
+            //     userView.scrollTop = chatView.scrollHeight;
+            // });
+
+            // socket.on('EXIT', function (msg) {
+            //     var children = userView.childNodes;
+            //     // if(children.length === 1 && children[i] === undefined){
+            //     //     console.log('undefined');
+            //     //     return;
+            //     // }
+
+            //     for(var i = 0; i < children.length; i++){
+            //         if(children[i] === undefined)
+            //             continue;
+            //         else 
+            //             console.log(children[i]);
+
+            //         console.log(children[i].nextSibling.innerText);
+            //         if(children[i].nextSibling.innerText === msg){
+            //             userView.removeChild(children[i]);
+            //             break;
+            //         }
+            //     }
+            // });
         </script>
     </section>
     <script src="/boardfront.js"></script>
