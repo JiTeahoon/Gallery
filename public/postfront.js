@@ -78,6 +78,28 @@ function deletePost(postIdx){
     xhr.send(JSON.stringify({ postIdx: postIdx }));
 }
 
+document.getElementById('commentregister').addEventListener('click', function () {
+    var commentinput = document.getElementById('commentinput').value;
+    var boardIdx = document.getElementById('postidx').value;
+    var urlquery = `http://localhost:3000/view/?page=${boardIdx}`
+
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log(xhr.responseText);
+            location.replace(urlquery);
+        } else if (xhr.status === 500) {
+            return alert("글을 삭제할 수 없습니다.");
+        } else {
+            console.error(xhr.responseText);
+        }
+    }
+
+    xhr.open('POST', '/view/register');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({ commentinput: commentinput, boardIdx , boardIdx }));
+});
+
 document.querySelector("#comment-list").querySelectorAll("button").forEach(function (item, index) {
     item.addEventListener('click', function () {
         console.log(index);

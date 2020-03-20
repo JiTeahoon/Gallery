@@ -83,20 +83,14 @@ router.get('/comment', function (req, res, next) {
     })
 });
 
-router.post('/commentregister', function (req, res, next) {
-    var idx = parseInt(`${req.body.idx}`);
-    var comment = req.body.comment;
+router.post('/register', function (req, res, next) {
+    var idx = parseInt(`${req.body.boardIdx}`);
+    var comment = req.body.commentinput;
     var id = req.session.authId;
 
-    var query = `INSERT INTO commentdb (postIndex, comment, created_at, id) VALUES (${idx}, '${comment}', CURRENT_TIMESTAMP, '${id}')`;
+    var query = `INSERT INTO commentdb (commentIdx ,postIndex, comment, created_at, id) VALUES (NULL ,${idx}, '${comment}', CURRENT_TIMESTAMP, '${id}')`;
 
-    var mySqlClient = mysql.createConnection({
-        user: 'root',
-        password: 'eocla880714',
-        database: 'gallerydb'
-    });
-
-    mySqlClient.query(query, function (error, result) {
+    req.app.get('mysql').query(query, function (error, result) {
         if (error) {
             console.log('error : ', error.message);
             next(error);
@@ -107,19 +101,13 @@ router.post('/commentregister', function (req, res, next) {
 });
 
 router.delete('/delete', function (req, res, next) {
-    var mySqlClient = mysql.createConnection({
-      user: 'root',
-      password: 'eocla880714',
-      database: 'gallerydb'
-    });
-  
     var boardIdx = req.body.boardIdx;
     var Idx = req.body.commentIdx;
   
     var query = `SELECT * FROM commentdb WHERE postIndex = ${boardIdx} ORDER BY created_at DESC`;
   
     //게시판 댓글 검색
-    mySqlClient.query(query, function (error, results) {
+    req.app.get('mysql').query(query, function (error, results) {
       if (error) {
         console.log(error);
         next(error);
@@ -127,11 +115,12 @@ router.delete('/delete', function (req, res, next) {
         if (results[Idx] !== undefined){
           if(req.session.authId !== results[Idx].id){
             res.status(500).send(results);
+            return;
           }
 
           query = `DELETE FROM commentdb WHERE commentIdx = ${results[Idx].commentIdx}`;
   
-          mySqlClient.query(query, function (error, results) {
+          req.app.get('mysql').query(query, function (error, results) {
             if (error) {
               console.log(error);
               next(error);
