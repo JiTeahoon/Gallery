@@ -1,11 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var mysql = require('mysql');
 var fs = require('fs');
 
 router.get('/', function (req, res, next) {
     fs.readFile('views/user-register.html', 'utf8', function (error, data) {
-        if(error){
+        if (error) {
             console.log(error);
             next(error);
         } else {
@@ -14,22 +13,16 @@ router.get('/', function (req, res, next) {
     })
 });
 
-router.get('/overlap', function(req, res, next){
+router.get('/overlap', function (req, res, next) {
     console.log(req.query);
     var query = `SELECT * FROM userdb where id = '${req.query.overlap}'`;
 
-    var mySqlClient = mysql.createConnection({
-        user: 'root',
-        password: 'eocla880714',
-        database: 'gallerydb'
-    });
-
-    mySqlClient.query(query, function (error, results) {
+    req.app.get('mysql').query(query, function (error, results) {
         if (error) {
             console.log(`it fail parse ${query}`);
             console.log('error : ', error.message);
             next(error);
-        } else if(results[0] === undefined) {
+        } else if (results[0] === undefined) {
             res.send(results);
         }
         else {
@@ -41,20 +34,14 @@ router.get('/overlap', function(req, res, next){
 router.post('/register', function (req, res, next) {
     var query = `SELECT * FROM userdb where id = '${req.body.id}'`
 
-    var mySqlClient = mysql.createConnection({
-        user: 'root',
-        password: 'eocla880714',
-        database: 'gallerydb'
-    });
-
-    mySqlClient.query(query, function (error, results) {
+    req.app.get('mysql').query(query, function (error, results) {
         if (error) {
             next(error);
         } else if (results[0] === undefined) {
 
             query = ` INSERT INTO userdb (id, password, name) VALUES ('${req.body.id}', '${req.body.password}', '${req.body.name}')`;
 
-            mySqlClient.query(query, function (error, results) {
+            req.app.get('mysql').query(query, function (error, results) {
                 if (error) {
                     next(error)
                 } else {

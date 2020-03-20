@@ -3,14 +3,110 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <title>게시판</title>
-    <h1>안녕하세요 <%= name %>님</h1>
+    <style>
+        nav {
+            width: 1000px;
+            height: 1000px;
+            float: left;
+        }
+
+        section {
+            width: 200px;
+            text-align: left;
+            float: left;
+            padding: 10px;
+        }
+
+        #container-table {
+            content: "";
+            width: 50%;
+            clear: both;
+            display: table;
+        }
+
+        #container {
+            float: left;
+            width: 350px;
+            height: 400px;
+            border: 1px solid black;
+            background: ivory;
+        }
+
+        #chatView {
+            height: 90%;
+            width: 350px;
+            overflow-y: scroll;
+        }
+
+        #userView {
+            height: 100%;
+            width: 350px;
+            overflow-y: scroll;
+        }
+
+        #userForm {
+            height: 10%;
+            width: 350px;
+            border-top: 1px solid black;
+            text-align: center;
+        }
+
+        #chatForm {
+            height: 10%;
+            width: 350px;
+            border-top: 1px solid black;
+            text-align: center;
+        }
+
+        #msg {
+            width: 80%;
+            height: 32px;
+            border-radius: 8px;
+        }
+
+        #send {
+            width: 16%;
+            height: 34px;
+            border-radius: 50px;
+            background: black;
+            color: white;
+        }
+
+        .msgLine {
+            margin: 15px;
+        }
+
+        .msgBox {
+            border: 1px solid black;
+            background: skyblue;
+            padding: 2px 5px;
+            border-radius: 10px;
+        }
+
+        nav,
+        section,
+        footer {
+            text-align: center;
+        }
+
+        nav {
+            line-height: 20px;
+        }
+
+        section {
+            line-height: 20px;
+        }
+    </style>
 </head>
 
 <body>
+<<<<<<< HEAD
     <table style="height: 52px; width: 942px;" border="1" id = "post-list">
         <tbody>
             <tr>
@@ -37,37 +133,175 @@
         아이디
         <br>
         <input type="text" id="id" placeholder="id">
+=======
+    <h1>안녕하세요 <%= name %>님</h1>
+    <nav>
+        <table style="height: 52px; width: 942px;" border="1">
+            <tbody>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>글쓴이</th>
+                    <th>작성일</th>
+                    <th>삭제</th>
+                </tr>
+            </tbody>
+            <tbody>
+                <% prodList.forEach(function(item, index){ %>
+                <tr>
+                    <th style="width: 76px; height: 10;"><%= item.postIdx %></th>
+                    <th style="width: 542px; height: 10;"><a href="/view/?page=<%= item.postIdx %>" ,
+                            onclick=`OnShowView(<%= item.postIdx %>)`><%= item.title %></a></th>
+                    <th style="width: 130px; height: 10;"><%= item.id %></th>
+                    <th style="width: 166px; height: 10;">
+                        <%= item.created_at.toISOString().replace(/T/, ' ').replace(/\..+/, '') %>
+                    </th>
+                    <th>
+                        <button type="button" style="text-align: center;"
+                            onclick=`deletePost(<%= item.postIdx %>)`>삭제</button>
+                    </th>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+        <div id="loginDialog" title="" style='display:none'>
+            아이디
+            <br>
+            <input type="text" id="id" placeholder="id">
+            <br>
+            비밀번호를 입력하시오.
+            <input type="text" id="password" placeholder="password">
+        </div>
+        <p style="text-align: left;"><button type="button" id="writebtn">글쓰기</button></p>
+        <table style="width: 942px;">
+            <tbody>
+                <tr>
+                    <!-- var idx = 1; -->
+                    <td style="width: 942px; text-align: center;"><a href="/board/page=1">1</a></td>
+                </tr>
+            </tbody>
+        </table>
+>>>>>>> Socket.IO
         <br>
-        비밀번호를 입력하시오.
-        <input type="text" id="password" placeholder="password">
-    </div>
-    <p style="text-align: left;"><button type="button" id = "writebtn">글쓰기</button></p>
-    <table style="width: 942px;">
-        <tbody>
-            <tr>
-                <!-- var idx = 1; -->
-                <td style="width: 942px; text-align: center;"><a href="/board/page=1">1</a></td>
-            </tr>
-        </tbody>
-    </table>
-    <br>
-    <table style="width: 942px;">
-        <tbody>
-            <tr>
-                <!-- var idx = 1; -->
-                <td style="width: 942px; text-align: center;">
-                    <select id = "searchoption">
-                        <option value="0" >제목</option>
-                        <option value="1" >글쓴이</option>
-                        <option value="2" >이름</option>
-                    </select>
-                    <input type="text" id="searchtext" autocomplete="on">
-                    <button type="button" id = "searchbtn" style="text-align: center;">검색</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <table style="width: 942px;">
+            <tbody>
+                <tr>
+                    <!-- var idx = 1; -->
+                    <td style="width: 942px; text-align: center;">
+                        <select id="searchoption">
+                            <option value="0">제목</option>
+                            <option value="1">글쓴이</option>
+                            <option value="2">이름</option>
+                        </select>
+                        <input type="text" id="searchtext" autocomplete="on">
+                        <button type="button" id="searchbtn" style="text-align: center;">검색</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </nav>
+    <section>
+        <div id="container-table">
+            <div id="container">
+                <div id="chatView">
+                </div>
+                <form id="chatForm" onsubmit="return false">
+                    <input type="text" id="msg">
+                    <input type="submit" id="send" value="전송">
+                </form>
+            </div>
+            <div id="container">
+                <div id="userView">
+                </div>
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src='/socket.io/socket.io.js'></script>
+        <script>
+            var socket = io();
 
+            var id;
+
+            var chatView = document.getElementById('chatView');
+            var chatForm = document.getElementById('chatForm');
+            var userView = document.getElementById('userView');
+
+            chatForm.addEventListener('submit', function () {
+                var msg = $('#msg');
+
+                if (msg.val() == '') {
+                    return;
+
+                } else {
+                    socket.emit('SEND', msg.val());
+
+                    var msgLine = $('<div class="msgLine">');
+                    var msgBox = $('<div class="me">');
+
+                    msgBox.append(msg.val());
+                    msgBox.css('display', 'inline-block');
+                    msgLine.css('text-align', 'right');
+                    msgLine.append(msgBox);
+
+                    $('#chatView').append(msgLine);
+
+                    msg.val('');
+                    chatView.scrollTop = chatView.scrollHeight;
+                }
+            });
+
+            socket.on('SEND', function (msg) {
+                var msgLine = $('<div class="msgLine">');
+                var msgBox = $('<div class="msgBox">');
+
+                msgBox.append(msg);
+                msgBox.css('display', 'inline-block');
+                msgLine.css('text-align', 'left');
+
+                msgLine.append(msgBox);
+                $('#chatView').append(msgLine);
+
+                chatView.scrollTop = chatView.scrollHeight;
+            });
+
+            // socket.on('ENTER', function (msg) {
+            //     var userLine = $('<div class="msgLine">');
+            //     var userBox = $('<div class="msgBox">');
+
+            //     userLine.append(`${msg}`);
+            //     userLine.css('display', 'inline-block');
+            //     userLine.css('text-align', 'left');
+
+            //     userLine.append(userBox);
+            //     $('#userView').append(userLine);
+
+            //     //socket.emit('SEND', msg.val());
+
+            //     userView.scrollTop = chatView.scrollHeight;
+            // });
+
+            // socket.on('EXIT', function (msg) {
+            //     var children = userView.childNodes;
+            //     // if(children.length === 1 && children[i] === undefined){
+            //     //     console.log('undefined');
+            //     //     return;
+            //     // }
+
+            //     for(var i = 0; i < children.length; i++){
+            //         if(children[i] === undefined)
+            //             continue;
+            //         else 
+            //             console.log(children[i]);
+
+            //         console.log(children[i].nextSibling.innerText);
+            //         if(children[i].nextSibling.innerText === msg){
+            //             userView.removeChild(children[i]);
+            //             break;
+            //         }
+            //     }
+            // });
+        </script>
+    </section>
     <script src="/boardfront.js"></script>
 </body>
 
