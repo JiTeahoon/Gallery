@@ -113,32 +113,45 @@ router.post('/commentregister', function (req, res, next) {
     });
 });
 
-router.delete('/delete', function(req, res, next){
-    var idx = parseInt(`${req.body.idx}`);
-    var query = `SELECT * FROM commentdb WHERE postIndex = ${req.body.postIndex}`;
-
-    mySqlClient.query(query, function (error, result) {
-        if (error) {
-            console.log('error : ', error.message);
-            next(error);
-        } else {
-            if(result[idx] === undefined || result[idx].id !== req.session.authId){
-                res.status(500).send("is not match id");
-                return;
-            }
-
-            var query = `DELETE * FROM commentdb WHERE postIndex = '${result[idx].postIndex}' AND id = '${result[idx].postIndex}' AND created_at = '${result[idx].created_at}'`;
-            mySqlClient.query(query, function (error, result) {
-                if (error) {
-                    console.log('error : ', error.message);
-                    next(error);
-                } else {
-                    res.send(result);           
-                }
-            });
-        }
+router.delete('/delete', function (req, res, next) {
+    var mySqlClient = mysql.createConnection({
+      user: 'root',
+      password: 'eocla880714',
+      database: 'gallerydb'
     });
-});
+  
+    var boardIdx = req.body.boardIdx;
+    var Idx = req.body.commentIdx;
+  
+    var query = `SELECT * FROM commentdb WHERE postIndex = ${boardIdx} ORDER BY created_at DESC`;
+  
+    //게시판 댓글 검색
+    mySqlClient.query(query, function (error, results) {
+      if (error) {
+        console.log(error);
+        next(error);
+      } else {
+        if (results[Idx] !== undefined){
+          if(req.session.authId !== results[Idx].id){
+            res.status(500).send(results);
+          }
+
+          query = `DELETE FROM commentdb WHERE commentIdx = ${results[Idx].commentIdx}`;
+  
+          mySqlClient.query(query, function (error, results) {
+            if (error) {
+              console.log(error);
+              next(error);
+            } else {
+              res.send();
+            }
+          });
+        } else {
+          res.status(500).send(results);
+        }
+      }
+    });
+  });
 // router.comment('/', function (req, res, next) {
 // });
 

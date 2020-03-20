@@ -67,21 +67,30 @@ router.delete('/delete', function (req, res, next) {
     database: 'gallerydb'
   });
 
-  var query = `SELECT * FROM postdb WHERE postIdx = ${req.body.postIdx}`;
+  var boardIdx = req.body.boardIdx;
+  var commentIdx = req.body.commentIdx;
 
+  var query = `SELECT * FROM postdb WHERE postIndex = ${boardIdx} ORDER BY commentdb.created_at`;
+
+  //게시판 댓글 검색
   mySqlClient.query(query, function (error, results) {
     if (error) {
       console.log(error);
       next(error);
     } else {
-      if (results[0] !== undefined) {
-        query = `DELETE FROM postdb WHERE postIdx = ${req.body.postIdx}`;
+      if (results[0] !== undefined){
+        if(req.session.authId !== results[commentIdx].id){
+          res.status(500).send(results);
+        }
+
+        query = `DELETE FROM postdb WHERE postIndex = ${boardIdx}`;
+
         mySqlClient.query(query, function (error, results) {
           if (error) {
             console.log(error);
             next(error);
           } else {
-            res.redirect('http://localhost:3000/board').send(results);
+            res.send(results);
           }
         });
       } else {
