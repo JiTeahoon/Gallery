@@ -118,7 +118,7 @@
                     <th>삭제</th>
                 </tr>
             </tbody>
-            <tbody id = "post-list">
+            <tbody id="post-list">
                 <% prodList.forEach(function(item, index){ %>
                 <tr>
                     <th style="width: 76px; height: 10;"><%= item.postIdx %></th>
@@ -143,7 +143,14 @@
             비밀번호를 입력하시오.
             <input type="text" id="password" placeholder="password">
         </div>
-        <p style="text-align: left;"><button type="button" id="writebtn">글쓰기</button></p>
+        <table style="width: 942px;">
+            <tbody>
+                <tr>
+                    <td style="text-align: left;"><button id="writebtn" type="button">글쓰기</button></td>
+                    <td style="text-align: right;"><button id="resetbtn" type="button" onclick="location.href='http://localhost:3000/board'";>목록</button></td>
+                </tr>
+            </tbody>
+        </table>
         <table style="width: 942px;">
             <tbody>
                 <tr>
@@ -156,7 +163,6 @@
         <table style="width: 942px;">
             <tbody>
                 <tr>
-                    <!-- var idx = 1; -->
                     <td style="width: 942px; text-align: center;">
                         <select id="searchoption">
                             <option value="0">제목</option>
@@ -233,43 +239,6 @@
 
                 chatView.scrollTop = chatView.scrollHeight;
             });
-
-            // socket.on('ENTER', function (msg) {
-            //     var userLine = $('<div class="msgLine">');
-            //     var userBox = $('<div class="msgBox">');
-
-            //     userLine.append(`${msg}`);
-            //     userLine.css('display', 'inline-block');
-            //     userLine.css('text-align', 'left');
-
-            //     userLine.append(userBox);
-            //     $('#userView').append(userLine);
-
-            //     //socket.emit('SEND', msg.val());
-
-            //     userView.scrollTop = chatView.scrollHeight;
-            // });
-
-            // socket.on('EXIT', function (msg) {
-            //     var children = userView.childNodes;
-            //     // if(children.length === 1 && children[i] === undefined){
-            //     //     console.log('undefined');
-            //     //     return;
-            //     // }
-
-            //     for(var i = 0; i < children.length; i++){
-            //         if(children[i] === undefined)
-            //             continue;
-            //         else 
-            //             console.log(children[i]);
-
-            //         console.log(children[i].nextSibling.innerText);
-            //         if(children[i].nextSibling.innerText === msg){
-            //             userView.removeChild(children[i]);
-            //             break;
-            //         }
-            //     }
-            // });
         </script>
     </section>
     <script src="/boardfront.js"></script>
