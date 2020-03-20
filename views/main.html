@@ -106,34 +106,6 @@
 </head>
 
 <body>
-<<<<<<< HEAD
-    <table style="height: 52px; width: 942px;" border="1" id = "post-list">
-        <tbody>
-            <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>글쓴이</th>
-                <th>작성일</th>
-            </tr>
-        </tbody>
-        <tbody>
-            <% prodList.forEach(function(item, index){ %>
-            <tr>
-                <th style="width: 76px;"><%= item.postIdx %></th>
-                <th style="width: 542px;"><a href="/view/?page=<%= item.postIdx %>" ,
-                        onclick=`OnShowView(<%= item.postIdx %>)`><%= item.title %></a></th>
-                <th style="width: 130px;"><%= item.id %></th>
-                <th style="width: 166px;"><%= item.created_at.toISOString().replace(/T/, ' ').replace(/\..+/, '') %>
-                </th>
-            </tr>
-            <% }); %>
-        </tbody>
-    </table>
-    <div id="loginDialog" title="" style='display:none'>
-        아이디
-        <br>
-        <input type="text" id="id" placeholder="id">
-=======
     <h1>안녕하세요 <%= name %>님</h1>
     <nav>
         <table style="height: 52px; width: 942px;" border="1">
@@ -146,7 +118,7 @@
                     <th>삭제</th>
                 </tr>
             </tbody>
-            <tbody>
+            <tbody id = "post-list">
                 <% prodList.forEach(function(item, index){ %>
                 <tr>
                     <th style="width: 76px; height: 10;"><%= item.postIdx %></th>
@@ -157,8 +129,7 @@
                         <%= item.created_at.toISOString().replace(/T/, ' ').replace(/\..+/, '') %>
                     </th>
                     <th>
-                        <button type="button" style="text-align: center;"
-                            onclick=`deletePost(<%= item.postIdx %>)`>삭제</button>
+                        <button type="button" style="text-align: center;">삭제</button>
                     </th>
                 </tr>
                 <% }); %>
@@ -181,7 +152,6 @@
                 </tr>
             </tbody>
         </table>
->>>>>>> Socket.IO
         <br>
         <table style="width: 942px;">
             <tbody>

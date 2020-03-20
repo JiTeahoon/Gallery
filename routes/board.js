@@ -27,12 +27,6 @@ router.get('/', function (req, res, next) {
         console.log('error : ', error.message);
         next(error);
       } else {
-<<<<<<< HEAD
-        console.log(`it connect search in parse ${query}`);
-        console.log(data);
-        
-=======
->>>>>>> Socket.IO
         res.send(ejs.render(data, {
           prodList: results,
           name: req.session.authId
@@ -52,35 +46,31 @@ router.get('/write', function (req, res, next) {
 });
 
 router.delete('/delete', function (req, res, next) {
-  var mySqlClient = mysql.createConnection({
-    user: 'root',
-    password: 'eocla880714',
-    database: 'gallerydb'
-  });
-
   var boardIdx = req.body.boardIdx;
-  var commentIdx = req.body.commentIdx;
 
-  var query = `SELECT * FROM postdb WHERE postIndex = ${boardIdx} ORDER BY commentdb.created_at`;
+  var query = `SELECT * FROM postdb WHERE postIdx = ${boardIdx} ORDER BY created_at`;
 
   //게시판 댓글 검색
-  mySqlClient.query(query, function (error, results) {
+  req.app.get('mysql').query(query, function (error, results) {
     if (error) {
       console.log(error);
       next(error);
     } else {
       if (results[0] !== undefined){
-        if(req.session.authId !== results[commentIdx].id){
+        if(req.session.authId !== results[0].id){
           res.status(500).send(results);
+          return;
         }
 
-        query = `DELETE FROM postdb WHERE postIndex = ${boardIdx}`;
+        query = `DELETE FROM postdb WHERE postIdx = ${boardIdx}`;
 
-        mySqlClient.query(query, function (error, results) {
+        req.app.get('mysql').query(query, function (error, results) {
           if (error) {
             console.log(error);
             next(error);
           } else {
+            query = `DELETE FROM commentdb WHERE postIndex = ${boardIdx}`;
+            req.app.get('mysql').query;
             res.send(results);
           }
         });
